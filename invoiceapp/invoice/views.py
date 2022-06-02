@@ -7,16 +7,24 @@ from .models import Invoice
 def index(request):
     
     "get form data and create invoice in the database "
+    template = loader.get_template('invoice/create_invoice.html')
+    context = {}
     if request.method == 'POST':
-        if request.POST.get('title') and request.POST.get('content'):
+        if request.POST.get('description') and request.POST.get('clientEmail'):
             invoice=Invoice()
-            invoice.title= request.POST.get('title')
-            invoice.content= request.POST.get('content')
+            invoice.description = request.POST.get('description')
+            invoice.clientEmail= request.POST.get('clientEmail')
+            invoice.createdAt = request.POST.get('createdAt')
+            invoice.paymentTerms = request.POST.get('paymentTerms')
+            invoice.status= request.POST.get('status')
+            invoice.total = request.POST.get('total')
             invoice.save()
             
-            return render(request, 'invoice/create_invoice.html')  
+            return HttpResponse(template.render(context, request))
 
         else:
-                return render(request,'posts/create_invoice.html')
+            return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponse(template.render(context, request))
 
     # return HttpResponse(template.render(context, request))
