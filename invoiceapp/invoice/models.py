@@ -1,3 +1,4 @@
+from faulthandler import disable
 from random import choices
 from tkinter import DISABLED
 from django.db import models
@@ -7,20 +8,27 @@ from django.utils import timezone
 #create initial invoice models
 
 
-class invoice(models.Model):
+class Invoice(models.Model):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["createdAt"].disabled = True #set this field to readonly
+        self.fields['total'].disabled = True #set this field to readonly
+       
     status_options = [
                     ('Draft','Draft'),
                     ('Pending','Pending'),
                     ('','')
                     ]
     id = models.CharField(primary_key=True,max_length=200)   
-    createdAt = models.DateTimeField(auto_now=True,DISABLED=True)
+    createdAt = models.DateTimeField(auto_now=True)
     paymentDue = models.DateField(blank=True, null=True)
     description = models.TextField()
     paymentTerms =  models.IntegerField()
     clientName = models.CharField(max_length=200)
-    clientEmail = models.CharField(max_length=200)
+    clientEmail = models.EmailField(max_length=200)
     status = models.CharField(max_length=10,choices=status_options,default='')
+    total = models.FloatField()
     
     def __str__(self):
         return self.id
@@ -42,7 +50,7 @@ class invoice(models.Model):
         
     
     
-class senderAddress(model.Model):
+class senderAddress(models.Model):
     
     street =  models.CharField(max_length=200)
     city = models.CharField(max_length=200)
@@ -50,19 +58,19 @@ class senderAddress(model.Model):
     country = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.street + " " + self.postCode + " " + self.country
+        return f"{self.street} {self.postCode} {self.country}"
 
-class clientAddress(model.Model):
+class clientAddress(models.Model):
     street =  models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     postCode = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.street + " " + self.postCode + " " + self.country
+        return f"{self.street} {self.postCode} {self.country}"
 
     
-class Items(model.Model):
+class Items(models.Model):
     
     name =  models.CharField(max_length=200)
     quantity = models.CharField(max_length=200)
