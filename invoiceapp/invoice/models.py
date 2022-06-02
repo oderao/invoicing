@@ -28,7 +28,7 @@ class Invoice(models.Model):
     clientName = models.CharField(max_length=200)
     clientEmail = models.EmailField(max_length=200)
     status = models.CharField(max_length=10,choices=status_options,default='')
-    total = models.FloatField()
+    total = models.FloatField(default=0.0)
     
     def __str__(self):
         return self.id

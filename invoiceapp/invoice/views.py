@@ -1,18 +1,22 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse
 from django.template import loader
 from .models import Invoice
 
 
 def index(request):
-    model = Invoice
-    fields = ['description']
-    template = loader.get_template('invoice/create_invoice.html')
-    context = {
-        'name_':'odera'
-    }
-    return HttpResponse(template.render(context, request))
+    
+    "get form data and create invoice in the database "
+    if request.method == 'POST':
+        if request.POST.get('title') and request.POST.get('content'):
+            invoice=Invoice()
+            invoice.title= request.POST.get('title')
+            invoice.content= request.POST.get('content')
+            invoice.save()
+            
+            return render(request, 'invoice/create_invoice.html')  
 
-    return HttpResponse("Hello, world. You're at the invoice index.")
+        else:
+                return render(request,'posts/create_invoice.html')
+
+    # return HttpResponse(template.render(context, request))
