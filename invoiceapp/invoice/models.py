@@ -10,11 +10,7 @@ from django.utils import timezone
 
 class Invoice(models.Model):
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["createdAt"].disabled = True #set this field to readonly
-        self.fields['total'].disabled = True #set this field to readonly
-       
+    
     status_options = [
                     ('Draft','Draft'),
                     ('Pending','Pending'),
@@ -24,22 +20,26 @@ class Invoice(models.Model):
     createdAt = models.DateTimeField(auto_now=True)
     paymentDue = models.DateField(blank=True, null=True)
     description = models.TextField()
-    paymentTerms =  models.IntegerField()
+    paymentTerms =  models.IntegerField(null=True)
     clientName = models.CharField(max_length=200)
     clientEmail = models.EmailField(max_length=200)
     status = models.CharField(max_length=10,choices=status_options,default='')
     total = models.FloatField(default=0.0)
     
-    def __str__(self):
-        return self.id
-
     def generate_id(self,length=10):
         """generate random string to be used as invoice id"""
         import string,random
         upper_string =  ''.join(random.choices(string.ascii_uppercase , k = 2))
         digit_string = ''.join(random.choices(string.digits , k = 4))
 
-        self.id =  upper_string + digit_string
+        rand_id =  upper_string + digit_string
+        return rand_id
+    
+    
+    def __str__(self):
+        return self.id
+
+    
     
     def generate_due_date(self):
         '''generate payment due date using payment terms'''

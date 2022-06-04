@@ -12,9 +12,10 @@
         <div class="col-8">
           <h1 class="mt-2">Create Invoice</h1>
           <hr class="mt-0 mb-4">
-          <form method="post">
-            
+          
+          <form method="POST" >
             {% csrf_token %}
+            
             <div style="padding-bottom: 18px;font-size : 24px;">Bill From</div>
             
             <div style=" margin-left: 0; margin-right: 1%; width: 100%;">Street Address<br/>
@@ -562,11 +563,11 @@
             </div>
             
             <div style = "display:flex; padding-bottom: 18px;">
-                <button id="add_item">Add New Item +</button><br>
+                <button type="button" id="add_item">Add New Item +</button><br>
             </div>
             <div style="display: flex; padding-bottom: 18px;">
-                <button style=" margin-left: 1%; margin-right: 0; width: 49%;">Discard</button>
-                <button style=" margin-left: 1%; margin-right: 0; width: 49%;">Save as Draft</button>
+                <button type="reset" style=" margin-left: 1%; margin-right: 0; width: 49%;">Discard</button>
+                <button id="save_as_draft" name="save_as_draft" style=" margin-left: 1%; margin-right: 0; width: 49%;">Save as Draft</button>
                 <button style=" margin-left: 1%; margin-right: 0; width: 49%;" class="btn btn-success">Save & Send</button>
     
             </div>
@@ -584,7 +585,9 @@
         console.log('hello')
         $('.item_list_div').append($('.item_list_div').html())
     })
-
+    $('#save_as_draft').click(function(){
+        $(this).val('save_as_draft')
+    })
 </script>
 
    
