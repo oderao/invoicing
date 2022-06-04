@@ -18,7 +18,7 @@ def index(request):
         if request.POST.get('save_as_draft'):
             #save invoice as draft even with no fields
             
-            invoice.status = 'Pending'
+            invoice.status = 'Draft'
             invoice.save()
         if request.POST.get('description') and request.POST.get('clientEmail'):
             invoice=Invoice()

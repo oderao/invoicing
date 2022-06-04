@@ -556,10 +556,15 @@
                         <input  type="text" id="item_price" name="item_price" style="max-width: 100%;" class="form-control"/>
                     </div>
                     <div style=" margin-left: 1%; margin-right: 0; width: 49%;">Total<br/>
-                        <input  type="text" id="item_total" name="item_total" style="max-width: 100%;" class="form-control"/>
+                        <input type="number" id="item_total" name="item_total" style="max-width: 100%;" class="form-control item_total"/>
                     </div>
                     
-                </div>   
+                    
+                </div>
+
+            </div>
+            <div id="item_total_hidden" name="item_total_hidden" >
+                <input type="number" id="sum_item_total" name="sum_item_total" style="max-width: 100%;" class="form-control item_total_hidden"/>
             </div>
             
             <div style = "display:flex; padding-bottom: 18px;">
@@ -568,7 +573,7 @@
             <div style="display: flex; padding-bottom: 18px;">
                 <button type="reset" style=" margin-left: 1%; margin-right: 0; width: 49%;">Discard</button>
                 <button id="save_as_draft" name="save_as_draft" style=" margin-left: 1%; margin-right: 0; width: 49%;">Save as Draft</button>
-                <button style=" margin-left: 1%; margin-right: 0; width: 49%;" class="btn btn-success">Save & Send</button>
+                <button type="button" id = "save_main" name = "save_main" style=" margin-left: 1%; margin-right: 0; width: 49%;" class="btn btn-success">Save & Send</button>
     
             </div>
           </form>
@@ -580,13 +585,23 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
 </script>
 <script>
-   
+    $('#item_total_hidden').hide()
     $('#add_item').click(function(){
-        console.log('hello')
         $('.item_list_div').append($('.item_list_div').html())
     })
     $('#save_as_draft').click(function(){
         $(this).val('save_as_draft')
+    })
+    $('#save_main').click(function(){
+        $(this).val('save_main')
+        const total_array = [];
+        $(".item_total").each(function(){
+            total_array.push(Number($(this).val()));
+        });
+        console.log(total_array)
+        var total = total_array.reduce((a,b)=> a+b,0);
+        $('#item_total_hidden').val(total)
+        console.log($("#item_total_hidden").val()) 
     })
 </script>
 
