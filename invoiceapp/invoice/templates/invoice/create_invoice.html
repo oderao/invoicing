@@ -598,10 +598,8 @@
         $(".item_total").each(function(){
             total_array.push(Number($(this).val()));
         });
-        console.log(total_array)
         var total = total_array.reduce((a,b)=> a+b,0);
         $('#item_total_hidden').val(total)
-        console.log($("#item_total_hidden").val()) 
     })
 </script>
 
