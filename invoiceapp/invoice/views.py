@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Invoice
+from .models import Invoice,clientAddress,Items,senderAddress
 
 
 def index(request):
@@ -20,14 +20,15 @@ def index(request):
             
             invoice.status = 'Draft'
             invoice.save()
-        if request.POST.get('description') and request.POST.get('clientEmail'):
+        if request.POST.get('save_main'):
             invoice=Invoice()
             invoice.description = request.POST.get('description')
+            invoice.clientName= request.POST.get('client_name')
             invoice.clientEmail= request.POST.get('client_email')
             invoice.createdAt = request.POST.get('createdAt')
             invoice.paymentTerms = request.POST.get('paymentTerms')
-            invoice.status= request.POST.get('status')
-            invoice.total = request.POST.get('total')
+            invoice.status= 'Pending'
+            invoice.total = request.POST.get('item_total_hidden')
             invoice.save()
             
             
