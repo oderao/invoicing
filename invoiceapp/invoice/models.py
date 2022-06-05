@@ -8,6 +8,25 @@ from django.utils import timezone
 
 #create initial invoice models
 
+class clientAddress(models.Model):
+    street =  models.CharField(null=True,max_length=200)
+    city = models.CharField(null=True,max_length=200)
+    postCode = models.CharField(null=True,max_length=200)
+    country = models.CharField(null=True,max_length=200)
+    
+    def __str__(self):
+        return f"{self.street} {self.postCode} {self.country}"
+
+class senderAddress(models.Model):
+    
+    street =  models.CharField(null=True,max_length=200)
+    city = models.CharField(null=True,max_length=200)
+    postCode = models.CharField(null=True,max_length=200)
+    country = models.CharField(null=True,max_length=200)
+    
+    def __str__(self):
+        return f"{self.street} {self.postCode} {self.country}"
+
 
 class Invoice(models.Model):
     
@@ -15,6 +34,7 @@ class Invoice(models.Model):
     status_options = [
                     ('Draft','Draft'),
                     ('Pending','Pending'),
+                    ('Paid','Paid'),
                     ('','')
                     ]
     id = models.CharField(primary_key=True,max_length=200)   
@@ -26,8 +46,8 @@ class Invoice(models.Model):
     clientEmail = models.EmailField(null = True,max_length=200)
     status = models.CharField(max_length=10,choices=status_options,default='')
     total = models.FloatField(null=True,default=0.0)
-    client_address = models.ForeignKey("clientAddress", on_delete=models.CASCADE)
-    sender_address = models.ForeignKey("senderAddress", on_delete=models.CASCADE)
+    client_address = models.ForeignKey(clientAddress, on_delete=models.CASCADE,null=True,blank=True)
+    sender_address = models.ForeignKey(senderAddress, on_delete=models.CASCADE,null=True,blank=True)
     
     def generate_id(self,length=10):
         """generate random string to be used as invoice id"""
@@ -53,33 +73,18 @@ class Invoice(models.Model):
         
     
     
-class senderAddress(models.Model):
-    
-    street =  models.CharField(null=True,max_length=200)
-    city = models.CharField(null=True,max_length=200)
-    postCode = models.CharField(null=True,max_length=200)
-    country = models.CharField(null=True,max_length=200)
-    
-    def __str__(self):
-        return f"{self.street} {self.postCode} {self.country}"
 
-class clientAddress(models.Model):
-    street =  models.CharField(null=True,max_length=200)
-    city = models.CharField(null=True,max_length=200)
-    postCode = models.CharField(null=True,max_length=200)
-    country = models.CharField(null=True,max_length=200)
-    
-    def __str__(self):
-        return f"{self.street} {self.postCode} {self.country}"
+
+
 
     
 class Items(models.Model):
     
-    invoice = models.ForeignKey('Invoice',on_delete=models.PROTECT,null=True)
+    invoice = models.ForeignKey('Invoice',on_delete=models.PROTECT,null=True,blank=True)
     name =  models.CharField(null=True,max_length=200)
-    quantity = models.CharField(null =True,max_length=200)
-    price = models.CharField(null=True,max_length=200)
-    total = models.CharField(null=True,max_length=200)
+    quantity = models.PositiveIntegerField(null =True,max_length=200)
+    price = models.PositiveIntegerField(null=True,max_length=200)
+    total = models.PositiveIntegerField(null=True,max_length=200)
     
     def __str__(self):
         return self.name
