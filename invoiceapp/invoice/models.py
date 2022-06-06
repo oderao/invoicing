@@ -1,6 +1,4 @@
-from faulthandler import disable
 from random import choices
-from tkinter import DISABLED
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
