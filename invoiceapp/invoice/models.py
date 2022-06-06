@@ -64,13 +64,12 @@ class Invoice(models.Model):
 
     
     
-    def generate_due_date(self):
+    def generate_due_date(self,days=0):
         '''generate payment due date using payment terms'''
-        from datetime import datetime,date,timedelta
+        from datetime import datetime,timedelta
         
-        if self.paymentTerms:
-            self.paymentDue = datetime.strptime(self.createdAt,"%m/%d/%y") + timedelta(days=10)
-        
+        due_date = datetime.now() + timedelta(days=days)
+        return due_date
     
     
 

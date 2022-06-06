@@ -16,7 +16,7 @@ def index(request):
         
         #calculate and set custom default field
         invoice.id = invoice.generate_id()
-        invoice.generate_due_date()
+        
         
         if request.POST.get('save_as_draft'):
             #save invoice as draft even with no fields
@@ -47,13 +47,15 @@ def index(request):
             invoice.clientName= request.POST.get('client_name')
             invoice.clientEmail= request.POST.get('client_email')
             invoice.createdAt = request.POST.get('createdAt')
-            invoice.paymentTerms = request.POST.get('paymentTerms')
+            invoice.paymentTerms = request.POST.get('due_date')
+            
             invoice.status= 'Pending'
             invoice.total = request.POST.get('sum_item_total')
             
             if client_address and sender_address:
                 invoice.client_address = client_address
                 invoice.sender_address = sender_address
+           
             invoice.save()
             
             # #create items and add foreign key invoice
@@ -116,13 +118,15 @@ def invoice_list(request):
             invoice.clientName= request.POST.get('client_name')
             invoice.clientEmail= request.POST.get('client_email')
             invoice.createdAt = request.POST.get('createdAt')
-            invoice.paymentTerms = request.POST.get('paymentTerms')
+            invoice.paymentTerms = request.POST.get('due_date')
             invoice.status= 'Pending'
             invoice.total = request.POST.get('sum_item_total')
             
             if client_address and sender_address:
                 invoice.client_address = client_address
                 invoice.sender_address = sender_address
+            if request.POST.get('due_date'):
+                invoice.paymentDue = invoice.generate_due_date(days=int(request.POST.get('due_date')))
             invoice.save()
             
             # #create items and add foreign key invoice

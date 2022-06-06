@@ -1,16 +1,17 @@
 {% extends 'invoice/base.html' %}
 
 {% block content %}
-  <h1 class="page-header">Invoice</h1>
+
+  <h1 class="page-header" style="color:#f8f8fb">Invoice</h1>
   <p style="float:right;">
-    <button type="button" class="btn btn-primary js-create-invoice">
+    <button type="button" class="btn btn-primary js-create-invoice" style="background:#7c5dfa; border-radius:15px; border-color:#7c5dfa">
       <span class="glyphicon glyphicon-plus"></span>
       Create Invoice
     </button>
   </p>
-  <table class="table" id="invoice-table">
-    <thead>
-      <tr>
+  <table class="table table-dark borderless table-hover " id="invoice-table">
+    <thead class="thead-dark">
+      <tr style="color:#f8f8fb;">
         <th>ID</th>
         <th>Client Name</th>
         <th>Description</th>
@@ -22,7 +23,7 @@
     </thead>
     <tbody>
       {% for invoice in invoices %}
-        <tr>
+        <tr style="color:#f8f8fb;">
           <td>{{ invoice.id }}</td>
           <td>{{ invoice.clientName }}</td>
           <td>{{ invoice.description }}</td>
@@ -39,23 +40,23 @@
     </tbody>
   </table>
   <div class="container">
-    <div class="row">
+    <div>
       <div class="col-8">
         <hr class="mt-0 mb-4">
         <div class="modal fade" id="invoice_modal">
           <div class="modal-dialog">
             <div class="modal-content">
-              <form method="POST" >
+              <form method="POST" style="background-color: #141625; color:#f8f8fb; padding:25px;" >
                   {% csrf_token %}
-                  <div style="padding-bottom: 18px;font-size : 24px;">Bill From</div>
+                  <div style="padding-bottom: 18px;font-size : 24px; color:#7c5dfa;">Bill From</div>
                   
                   <div style=" margin-left: 0; margin-right: 1%; width: 100%;">Street Address<br/>
-                      <input  type="text" id="from_street_address" name="from_street_address"  class="form-control"/>
+                      <input type="text" id="from_street_address" name="from_street_address"  class="form-control"/>
                   </div>
               
                   <div style="display: flex; padding-bottom: 18px;">
                       <div style=" margin-left: 0; margin-right: 1%; width: 49%;">City<br/>
-                          <input  type="text" id="from_city" name="from_city" style="max-width: 100%;" class="form-control"/>
+                          <input type="text" id="from_city" name="from_city" style="max-width: 100%;" class="form-control"/>
                       </div>
                       <div style=" margin-left: 0; margin-right: 1%; width: 49%;">Post Code<br/>
                           <input  type="text" id="from_post_code" name="from_post_code" style="max-width: 100%;" class="form-control"/>
@@ -302,7 +303,7 @@
                           </select>
                       </div>
                   </div>
-                  <div style="padding-bottom: 18px;font-size : 24px;">Bill To</div>
+                  <div style="padding-bottom: 18px;font-size : 24px; color:#7c5dfa">Bill To</div>
               
                   <div style="padding-bottom: 18px;">Clients Name<br/>
                       <input  type="text" id="client_name" name="client_name" style="" class="form-control"/>
@@ -569,9 +570,13 @@
                       <div style=" margin-left: 0; margin-right: 1%; width: 49%;">Issue Date<br/>
                           <input  type="date" id="issue_date" name="issue_date" style="max-width: 100%;" class="form-control"/>
                       </div>
-                      <div style=" margin-left: 1%; margin-right: 0; width: 49%;">Payment Date<br/>
-                          <input  type="date" id="due_date" name="due_date" style="max-width: 100%;" class="form-control"/>
+                      <div style=" margin-left: 1%; margin-right: 0; width: 49%;">Payment Terms<br/>
+                          <input placeholder="Number of Days"  type="number" id="due_date" name="due_date" style="max-width: 100%;" class="form-control"/>
                       </div>
+                      
+                  </div>
+                  <div style=" margin-left: 0; margin-right: 1%; width: 100%;">Project Description<br/>
+                    <input type="text" id="description" name="description"  class="form-control"/>
                   </div>
                   <div style="padding-bottom: 18px;font-size : 24px;">Item Details  
                   </div>
@@ -599,14 +604,17 @@
                   </div>
                   
                   <div style = "display:flex; padding-bottom: 18px;">
-                      <button type="button" id="add_item">Add New Item</button>
-                      <span class="glyphicon glyphicon-plus"></span>
+                      <button type="button" id="add_item" style="color:white;border-radius:15px; border-color:#252945; background:#252945; width:100%;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add New Item
+                      </button>
+                      
                       <br>
                   </div>
                   <div style="display: flex; padding-bottom: 18px;">
-                      <button type="reset" style=" margin-left: 1%; margin-right: 0; width: 49%;">Discard</button>
-                      <button  id="save_as_draft" name="save_as_draft" style=" margin-left: 1%; margin-right: 0; width: 49%;">Save as Draft</button>
-                      <button type="submit" id = "save_main" name = "save_main" style=" margin-left: 1%; margin-right: 0; width: 49%;" class="btn btn-success">Save & Send</button>
+                      <button type="button" id="discard" style=" margin-left: 1%; margin-right: 0; width: 49%; color:black;border-radius:15px; border-color:#f8f8fb; background:#f8f8fb">Discard</button>
+                      <button  id="save_as_draft" name="save_as_draft" style=" margin-left: 1%; margin-right: 0; width: 49%; border-radius:15px; border-color:#252945; background:#252945">Save as Draft</button>
+                      <button type="submit" id = "save_main" name = "save_main" style=" margin-left: 1%; margin-right: 0; width: 49%; border-radius:15px; border-color:#7c5dfa; background:#7c5dfa" class="btn btn-success">Save & Send</button>
           
                   </div>
                 </form>
@@ -617,11 +625,14 @@
       </div>
     </div>
   </div>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
 </script>
 <script>
     $('.js-create-invoice').click(function(){
         $('#invoice_modal').modal('show'); 
+    })
+    $('#discard').click(function(){
+        $('#invoice_modal').modal('hide'); 
     })
     $('#item_total_hidden').hide()
     $('#add_item').click(function(){
