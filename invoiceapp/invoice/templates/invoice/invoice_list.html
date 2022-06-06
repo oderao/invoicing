@@ -32,10 +32,15 @@
           <td>{{ invoice.status }}</td>
           <td>{{ invoice.total }}</td>
         </tr>
+        
       {% empty %}
         <tr>
-          <td colspan="7" class="text-center bg-warning">No Invoices Created</td>
+          <td colspan="7" class="text-center bg-warning">There is Nothing here,
+            Create an invoice by clicking on the New Invoice and get started
+            
+        </td>
         </tr>
+        <img src="invoice/illustration-empty.svg" alt="" >
       {% endfor %}
     </tbody>
   </table>
